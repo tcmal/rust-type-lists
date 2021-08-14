@@ -1,8 +1,7 @@
 #![feature(test)]
 
-mod naive;
+mod runtime;
 mod compile;
-use std::{thread::sleep, time::Duration};
 
 pub trait PassPosition {}
 

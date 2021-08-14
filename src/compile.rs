@@ -29,17 +29,22 @@ where
     }
 }
 
+macro_rules! consdrawpass {
+    ($x:expr) => { $x };
+    ($x:expr, $($y:expr),+) => { ConsDrawPass { a: $x, b: consdrawpass!($($y),*)} };
+}
+
 #[cfg(test)]
 mod bench {
     extern crate test;
 
     use super::*;
-    use crate::*;
     use test::*;
 
     #[bench]
     fn compiled_bench(bencher: &mut Bencher) {
-        let dp = ConsDrawPass {a: One, b: ConsDrawPass {a: Two, b: ConsDrawPass { a: Three, b: Four }}};
+        // let dp = ConsDrawPass {a: One, b: ConsDrawPass {a: Two, b: ConsDrawPass { a: Three, b: Four }}};
+        let dp = consdrawpass!(One, Two, Three, Four);
         bencher.iter(|| {
             DrawPass::<Singular>::render(&dp);
         });
